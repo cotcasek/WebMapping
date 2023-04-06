@@ -1,2 +1,2 @@
 # WebMapping
-Web mappinga ssignments for GEOG 490
+Web mapping assignments for GEOG 490
