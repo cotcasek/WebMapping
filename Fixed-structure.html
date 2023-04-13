@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <title>Fixed Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <!--    1.1.  Include the reference to the Mapbox JavaScript here in the <head> of the page  -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+
+      
+    <!--    1.2 Include the reference to the Mapbox CSS here in the <head> of the page  -->
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+        /* 1.4 Insert the CSS code here between the <style> tags */
+        body { margin:50px; padding:0; }
+        #columbus { position:relative; height:300px; width:50%;}
+        
+        /* 2.5.2 Insert additional CSS code here between the <style> tags */
+        #boise { position:relative; height:300px; width:50%;}
+        
+        /*insert CSS for THIRD MAP */
+        /* 2.5.2 Insert additional CSS code here between the <style> tags */
+        #pittsburgh { position:relative; height:300px; width:50%;}
+        
+
+    </style>
+  </head>
+
+  <body>
+        <!-- 1.3 Insert the div for the structure of the page here in the <body> of the page -->
+    <h1> Columbus Map: </h1>
+    <div id='columbus'></div>
+    <hr>
+    <h1> Boise Map: </h1>
+    <div id='boise'></div>
+    <hr>
+    <h1> Pittsburgh Map: </h1>
+    <div id='pittsburgh'></div>
+
+        <script>
+            /* Insert the JavaScript within the <script> tags, within the body */
+            // 2.1 Start with the Mapbox access token
+            mapboxgl.accessToken = 'pk.eyJ1IjoiY290Y2FzZWsiLCJhIjoiY2xnNWZrMWRlMDJsczNlcWk2cTRkMWNoMSJ9.UVN5jJ6NaWVDN9jbEYS0Aw'; //  Put your access token between the single quotes.
+
+
+            // 2.2 Then initialize the first map
+            var map = new mapboxgl.Map({
+                container: 'columbus', // id of a div on your page, where the map will be inserted
+                style: 'mapbox://styles/mapbox/streets-v11', // the style URL 'mapbox://styles/mapbox/streets-v11' 
+                center: [-83.0193, 40.0018], // starting position [lng, lat] eg. [-122.6788, 45.5212]
+                zoom: 11 // starting zoom 
+            });
+
+
+            // 2.3 Add any other variables (such as popups and markers) to the first map
+            var popup = new mapboxgl.Popup()
+                .setText('When I lived in Columbus, I had a lot of fun at Ohio Stadium');
+
+            var marker = new mapboxgl.Marker({color:'red'})
+                .setLngLat([-83.0193, 40.0018]) // starting position [lng, lat]
+                .setPopup(popup) //add the popup named "popup" to this marker 
+		        .addTo(map); // add it to the map with the ID "map"
+
+
+            // 2.4 Add arguments to disable the map interactivity here
+            // Disable drag and zoom handlers.
+            map.dragPan.disable();
+            map.scrollZoom.disable();
+            map.boxZoom.disable();
+            map.dragRotate.disable();
+            map.keyboard.disable();
+            map.doubleClickZoom.disable();
+            map.touchZoomRotate.disable();
+            map.touchZoomRotate.disableRotation()
+
+
+            // 2.5.3 Then initialize the 2nd map
+            var map2 = new mapboxgl.Map({
+            container: 'boise', // id of a div on your page, where the map will be inserted
+            style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+            center: [-116.2013, 43.6265], // starting position [lng, lat] eg. [-122.6788, 45.5212]
+            zoom: 11 // starting zoom 
+            });
+
+
+            // 2.5.4 Add any other variables (such as markers) to the second map
+            var popup2 = new mapboxgl.Popup()
+                .setText('This is my favorite neighborhood to walk through in Boise.');
+
+            var marker2 = new mapboxgl.Marker({color:'blue'})
+                .setLngLat([-116.2013, 43.6265]) // starting position [lng, lat] 
+                .setPopup(popup2) //add the popup to the marker 
+                .addTo(map2); // id it to the map with the ID *map2*
+
+
+            // 2.5.5 Add arguments to disable the second map's interactivity here
+            map2.dragPan.disable();
+            map2.scrollZoom.disable();
+            map2.boxZoom.disable();
+            map2.dragRotate.disable();
+            map2.keyboard.disable();
+            map2.doubleClickZoom.disable();
+            map2.touchZoomRotate.disable();
+            map2.touchZoomRotate.disableRotation();
+            
+            //last step: initialize 3rd map, create popup, disable interactivity
+            // initialize   third    map
+            var map = new mapboxgl.Map({
+                container: 'pittsburgh', // id of a div on your page, where the map will be inserted
+                style: 'mapbox://styles/mapbox/streets-v11', // the style URL 'mapbox://styles/mapbox/streets-v11' 
+                center: [-79.9445, 40.4623], // starting position [lng, lat] eg. [-122.6788, 45.5212]
+                zoom: 11 // starting zoom 
+            });
+
+
+            // THIRD MAP add variables
+            var popup = new mapboxgl.Popup()
+                .setText('There is a fantastic sushi restaurant in this Pittsburgh neighborhood.');
+
+            var marker = new mapboxgl.Marker({color:'forestgreen'})
+                .setLngLat([-79.9445, 40.4623]) // starting position [lng, lat]
+                .setPopup(popup) //add the popup named "popup" to this marker 
+		        .addTo(map); // add it to the map with the ID "map"
+
+
+            // THIRD MAP disable interactivity
+            // Disable drag and zoom handlers.
+            map.dragPan.disable();
+            map.scrollZoom.disable();
+            map.boxZoom.disable();
+            map.dragRotate.disable();
+            map.keyboard.disable();
+            map.doubleClickZoom.disable();
+            map.touchZoomRotate.disable();
+            map.touchZoomRotate.disableRotation()
+
+        </script>
+  </body>
+</html>
