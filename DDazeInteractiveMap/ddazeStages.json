@@ -1,0 +1,60 @@
+{
+   "type": "FeatureCollection",
+   "features": [
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1735142,33.86965362 ]
+    },
+    "properties": {
+    "label":"Moon Stage", //Moon Stage
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1735888,33.87118983 ]
+    },
+    "properties": {
+    "label":"Block Stage", //Block Stage
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.17006,33.87041553 ]
+    },
+    "properties": {
+    "label":"Beach Stage", //Beach Stage
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1700973,33.87145 ]
+    },
+    "properties": {
+    "label":"Sanctuary Stage", //Sanctuary Stage
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1746258,33.874609 ]
+    },
+    "properties": {
+    "label":"Outer Space Stage", //Outer Space Stage
+    "icon":"music"
+    }
+  }
+]
+}
