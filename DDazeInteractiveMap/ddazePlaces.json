@@ -1,0 +1,390 @@
+{
+   "type": "FeatureCollection",
+   "features": [
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1735142,33.86965362 ]
+    },
+    "properties": {
+    "label":"Moon Stage",
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1735888,33.87118983 ]
+    },
+    "properties": {
+    "label":"Block Stage",
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.17006,33.87041553 ]
+    },
+    "properties": {
+    "label":"Beach Stage",
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1700973,33.87145 ]
+    },
+    "properties": {
+    "label":"Sanctuary Stage",
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1746258,33.874609 ]
+    },
+    "properties": {
+    "label":"Outer Space Stage",
+    "icon":"music"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.172214,33.8718498 ]
+    },
+    "properties": {
+    "label":"Merch",
+    "icon":"shirt"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1714951,33.87164492 ]
+    },
+    "properties": {
+    "label":"Marketplace",
+    "icon":"basket"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1726784,33.87087726 ]
+    },
+    "properties": {
+    "label":"Shops",
+    "icon":"basekt"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1728716,33.87029155 ]
+    },
+    "properties": {
+    "label":"Food",
+    "icon":"pizza"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1739899,33.87057283 ]
+    },
+    "properties": {
+    "label":"Food",
+    "icon":"pizza"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1714924,33.87126808 ]
+    },
+    "properties": {
+    "label":"Food",
+    "icon":"pizza"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1706608,33.87097102 ]
+    },
+    "properties": {
+    "label":"Food",
+    "icon":"pizza"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1723772,33.87123998 ]
+    },
+    "properties": {
+    "label":"Water",
+    "icon":"raindrop"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1742095,33.87043312 ]
+    },
+    "properties": {
+    "label":"Water",
+    "icon":"raindrop"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1739964,33.8707699 ]
+    },
+    "properties": {
+    "label":"Restroom",
+    "icon":"restroom"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1740608,33.8701775 ]
+    },
+    "properties": {
+    "label":"Restroom",
+    "icon":"restroom"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1744211,33.8708975 ]
+    },
+    "properties": {
+    "label":"VIP Village",
+    "icon":"star"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1736695,33.8700646 ]
+    },
+    "properties": {
+    "label":"Bar",
+    "icon":"beer"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1730562,33.8700473 ]
+    },
+    "properties": {
+    "label":"Bar",
+    "icon":"beer"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.172429,33.8713736 ]
+    },
+    "properties": {
+    "label":"Restroom",
+    "icon":"restroom"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1745987,33.8752593 ]
+    },
+    "properties": {
+    "label":"Restroom",
+    "icon":"restroom"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1747918,33.8750811 ]
+    },
+    "properties": {
+    "label":"Food",
+    "icon":"pizza"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1729432,33.8716101 ]
+    },
+    "properties": {
+    "label":"Restroom",
+    "icon":"restroom"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1708242,33.8715611 ]
+    },
+    "properties": {
+    "label":"Restroom",
+    "icon":"restroom"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1696977,33.8703451 ]
+    },
+    "properties": {
+    "label":"Restroom",
+    "icon":"restroom"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1698855,33.8706658 ]
+    },
+    "properties": {
+    "label":"Bar",
+    "icon":"beer"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1714948,33.8709019 ]
+    },
+    "properties": {
+    "label":"Bar",
+    "icon":"beer"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1730344,33.8711513 ]
+    },
+    "properties": {
+    "label":"Bar",
+    "icon":"beer"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1762834,33.87248 ]
+    },
+    "properties": {
+    "label":"Coyote Campground",
+    "icon":"tent"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1794914,33.8735846 ]
+    },
+    "properties": {
+    "label":"Quail Campground",
+    "icon":"tent"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1734725,33.8748852 ]
+    },
+    "properties": {
+    "label":"Owl Campground",
+    "icon":"tent"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1777068,33.8766429 ]
+    },
+    "properties": {
+    "label":"Roadrunner Campground",
+    "icon":"tent"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1744237,33.8772664 ]
+    },
+    "properties": {
+    "label":"Bobcat Campground",
+    "icon":"tent"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.1660221,33.8783954 ]
+    },
+    "properties": {
+    "label":"Overflow Campground",
+    "icon":"tent"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.174189,33.8753223 ]
+    },
+    "properties": {
+    "label":"General Store",
+    "icon":"castle"
+    }
+  }
+]
+}
