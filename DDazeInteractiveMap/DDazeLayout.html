@@ -1,0 +1,133 @@
+<!-- A Versatile Layout for Full-screen Maps by Andy Cochran
+Andy Cochran 
+From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-maps-229cec508b22 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Desert Daze Music Festival</title>
+
+    
+    <!-- JavaScript Libraries-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.js"></script>
+
+  
+    <!-- CSS Links -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css" rel="stylesheet" />
+    <link href="DDAZEcss.css" rel="stylesheet" />
+    
+    
+        <!--   Link to Google font, Orbitron-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    
+    <!--   Link to Google font, Yanone Kaffeesatz-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+    <div class="site-header">
+        <strong class="site-title">Welcome to the Valley of the Unbroken Horizon</strong>
+    </div>
+
+    <div class="site-main grid-x has-content-open">
+
+<!--
+        <div class="search-container cell medium-3 large-2">
+            <input type="text" placeholder="Search..." class="search" />
+            <ul class="search-results no-bullet">
+                <li>Search Result 1</li>
+                <li>Search Result 2</li>
+                <li>Search Result 3</li>
+            </ul>
+        </div>
+-->
+        
+        <div class="map-container cell medium-auto large-order-2">
+             <!--  ADD iframe here, inside the versitle layout's map container (VI.2.)   -->
+            <iframe src="ddazeMap.html" title="Map"></iframe>
+
+        </div>
+
+        <!--  Sidebar panel  -->
+        <div class="sidebar cell medium-3 large-2 large-order-1 show-for-medium">
+            <h5><br>Information Portal:</h5>
+            <ul>
+                <li><a class="content-link" href="#">Inspiration and References</a></li>
+                <li><a class="content-link" href="#">2022 Schedule</a></li>
+                <li>Pictures</li>
+                <li>For more information check out <a href="https://desertdaze.org/" target="_blank">desertdaze.org</a>.</li>
+            </ul>
+            <p style="font-size: 15px">This layout of this site is based on style code provided by <a href="https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-maps-229cec508b22" target="_blank">Andy Cochran</a>, and modifed by the site creator. </p>
+
+            <hr />
+
+        </div>
+
+        <div class="content-close-button-container">
+            <a href="#" class="content-close-button">×</a>
+        </div>
+        
+        <!--  Content panel  -->
+<!--
+        <div id="inspiration" class="content cell large-5 large-order-3">
+            <h2>This map was inspired by the work of artists!</h2>
+            <p>fghfdgfh</p>
+            <p>Ffdghdfhg</p>
+            <p><img src= "img/sunday.png" alt="Sunday schedule"></p>
+            <p>Credit: <a href= "https://desertdaze.org/about/">desertdaze.org/about</a></p>
+        </div>
+-->
+        
+        <div id="schedule" class="content cell large-5 large-order-3">
+            
+            <h2>This map was inspired by the work of artists!</h2>
+            <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">Check out the <a href= "https://desertdaze.org/wp-content/uploads/2022/09/DesertDaze_2022_VenueMap-5-2048x2048.jpg" target="_blank">original 2022 Desert Daze Festival Map</a> created by <a href="https://www.instagram.com/mermaidhex/?hl=en" target="_blank">Mermaid Hex</a> and <a href="https://www.instagram.com/obelisk_teleporter/?hl=en" target="_blank">Obelisk Teleporter.</a></span></p>
+            <p></p>
+            
+            <h2>Full Weekend Schedule</h2>
+            <p></p>
+            <p><img src= "img/thursday.png" alt="Thursday schedule"></p>
+            <p><img src= "img/friday.png" alt="Friday schedule"></p>
+            <p><img src= "img/saturday.png" alt="Saturday schedule"></p>
+            <p><img src= "img/sunday.png" alt="Sunday schedule"></p>
+            <p>Credit: <a href= "https://desertdaze.org/about/">desertdaze.org/about</a></p>
+        </div>
+
+    </div>
+
+    <script>
+       
+        $(document).ready(function() {
+
+            $('.content-close-button').click(function() {
+                $('.content-close-button').hide();
+                $('.content').hide();
+                $('.site-main').removeClass('has-content-open')
+
+                // When the map is resized programmatically, window resize must be triggered so that the map renders in the newly allotted space.
+                window.dispatchEvent(new Event('resize'));
+
+            });
+
+            $('.content-link').click(function() {
+                $('.content-close-button').show();
+                $('.content').show();
+                $('.site-main').addClass('has-content-open')
+                window.dispatchEvent(new Event('resize'));
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

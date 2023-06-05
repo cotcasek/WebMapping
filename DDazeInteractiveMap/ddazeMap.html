@@ -1,0 +1,2948 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Desert Daze Intereactive Festival Map</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+    
+    <!--   Link to Google font, Orbitron-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    
+    <!--   Link to Google font, Yanone Kaffeesatz-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+    <style>
+        
+        .mapboxgl-popup{
+            font-family: 'Yanone Kaffeesatz', sans-serif;
+            color: #9DF900;
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 1.25em;
+            opacity: 1;
+            visibility: visible; /*doesn't work*/
+            
+        }
+        
+        .mapboxgl-popup-content{
+            background: black;
+            opacity: .8;
+            border-radius: 15px; 
+            visibility: visible; /*doesn't work*/
+            
+        }
+        
+        
+        .mapboxgl-popup-content a{
+            color: #9DF900
+        }
+        
+
+        .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+            border-top-color: black;
+            opacity: .8;
+        }
+
+        .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+            border-top-color: black;
+            opacity: .8;
+        }
+
+        .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+            border-top-color: black;
+            opacity: .8;
+        }
+
+        .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+            border-top-color: black;
+            opacity: .8;
+        }
+        
+        /* styling for title/slider bar (from mapbox api example) */
+        .map-overlay {
+/*            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;*/
+            font-family: 'Orbitron', sans-serif;
+/*            color: '#fff'*/ /* makes the whole div dissappear */
+            position: absolute;
+            width: 50%;
+            top: 0;
+            left: 0;
+            padding: 10px;
+            }
+
+            .map-overlay .map-overlay-inner {
+            background-color: #D01583; /*slider box pink */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: white;
+            letter-spacing: 2px;
+            }
+
+            .map-overlay h2 {
+/*            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;*/
+            font-family: 'Orbitron', sans-serif;
+            color: '#fff' !important; /* not changing font color to white */
+            line-height: 24px;
+            display: block;
+            margin: 0 0 10px;
+            }
+        
+            .map-overlay p {
+/*            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;*/
+            font-family: 'Orbitron', sans-serif;
+            color: '#fff' !important; 
+            line-height: 15px;
+            display: block;
+            margin: 0 0 10px;
+            }
+        
+/*
+            .map-overlay .legend .bar {
+            height: 10px;
+            width: 100%;
+            background: linear-gradient(to right, #fca107, #7f3121);
+            }
+*/
+
+            .map-overlay input {
+            background-color: transparent;
+            display: inline-block;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            cursor: ew-resize;
+            }
+
+
+            /*more slider styling*/
+            .map-overlay .map-overlay-inner .slider {
+              -webkit-appearance: none;
+              width: 100%;
+              height: 10px;
+              border-radius: 5px;
+              background: white /*#85FDDF*/;
+              outline: none;
+              /*opacity: 0.7;*/
+              -webkit-transition: .2s;
+              transition: opacity .2s;
+            }
+
+            /*.slider:hover {
+              opacity: 1;
+            }*/
+
+            .map-overlay .map-overlay-inner .slider::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 30px;
+              height: 30px;
+              border: 0;
+              background: url('icons8-ufo-30.png');
+              cursor: pointer;
+            }
+
+            .map-overlay .map-overlay-inner .slider::-moz-range-thumb {
+              width: 30px;
+              height: 30px;
+              border: 0;
+              background: url('icons8-ufo-30.png');
+              cursor: pointer;
+            }
+        
+            /*  style for items with the class "LegendContainer" */
+           .LegendContainer {
+             position: absolute;
+             bottom: 20px;
+             left: 2px;
+             z-index: 2;
+             width: 150px;
+             height: 300px;
+             background: rgba(80, 80, 80, .75);
+             transition: width 2s, height 2s; /* this is the time it takes for the container to transition */
+             border-radius: 7px;
+           }
+        
+            /* style for items with the class "legendItem" */
+           .legendItem {
+               margin: 0px;
+               padding-left: 10px;
+               display:inline-block;
+               margin:auto;
+/*               transform: translate(50%, 50%);*/
+               font-family: 'Yanone Kaffeesatz', sans-serif;
+               font-size: 20px;
+           }
+        
+           .layerDescription {
+             color: white;
+             padding-left: 10px;
+           }
+        
+            /*  add class for every data type (food, music, campground, etc) ? */
+        
+        .merch{
+            color: #DF7B3D;
+        }
+        
+        .shopping{
+            color: #EB4545;
+        }
+        
+        .food {
+            color: #5FC7C9;
+        }
+        
+        .bar {
+            color: #7E2B7B;
+        }
+        
+        .stage {
+            color: #E3457F;
+        }
+        
+        .campground {
+            color: #613D1D;
+        }
+        
+        .water {
+            color: #427FC2;
+        }
+        
+        .restroom {
+            color: #FFEFDF;
+        }
+        
+        .vip {
+            color: #D7CB45;
+        }
+        
+        .genstore {
+            color: #23B35C;
+        }
+
+    </style>
+        <div id="map"></div>
+    
+        <!-- add slider bar -->
+        <div class="map-overlay top">
+            <div class="map-overlay-inner">
+                <h2>What's happening at Desert Daze?<br></h2>
+                <p style="font-size: 10px">Move the slider and click the <span style="color: #F8F900">glowing</span> stage points to find out!</p>
+                <input id="slider" class="slider" type="range" min="14" max="97" step="1" value="0">
+                <p style='color: #F8F900'><br>Day/Time:  <label id="set_time"></label> </p>
+                
+            </div>
+        </div>
+    
+       <div class="LegendContainer">
+         <div class="legendItem">
+             <span class="stage"><br>&#11044;</span>
+             <span class="layerDescription">Stage</span>
+         </div>
+         <div class="legendItem">
+             <span class="merch">&#11044;</span>
+             <span class="layerDescription">Merch</span>
+         </div>
+         <div class="legendItem">
+             <span class="water">&#11044;</span>
+             <span class="layerDescription">Water Station</span>
+         </div>
+           <div class="legendItem">
+             <span class="food">&#11044;</span>
+             <span class="layerDescription">Food Vendor</span>
+        </div>
+        <div class="legendItem">
+             <span class="bar">&#11044;</span>
+             <span class="layerDescription">Bar</span>
+        </div>
+        <div class="legendItem">
+             <span class="restroom">&#11044;</span>
+             <span class="layerDescription">Restroom</span>
+        </div>
+        <div class="legendItem">
+             <span class="shopping">&#11044;</span>
+             <span class="layerDescription">Shopping</span>
+         </div>
+        <div class="legendItem">
+             <span class="genstore">&#11044;</span>
+             <span class="layerDescription">General Store</span>
+        </div>
+        <div class="legendItem">
+             <span class="vip">&#11044;</span>
+             <span class="layerDescription">VIP Village</span>
+        </div>
+        <div class="legendItem">
+             <span class="campground">&#11044;</span>
+             <span class="layerDescription">Campground</span>
+        </div>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY290Y2FzZWsiLCJhIjoiY2xpNmN2OW4zMWVnajNqcnJvcnE0ZW9vMyJ9.Y0ifc9EYQ9VdsRxQat797w';
+        
+        //JSON data, icon=type of feature, label=name of feature
+        var places = 
+            {
+               "type": "FeatureCollection",
+               "features": [
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "label":"Moon Stage",
+                "icon":"music"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "label":"Block Stage",
+                "icon":"music"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "label":"Beach Stage",
+                "icon":"music"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "label":"Sanctuary Stage",
+                "icon":"music"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "label":"Outer Space Stage",
+                "icon":"music"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.172214,33.8718498 ]
+                },
+                "properties": {
+                "label":"Merch",
+                "icon":"Merch"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1714951,33.87164492 ]
+                },
+                "properties": {
+                "label":"Marketplace",
+                "icon":"Marketplace"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1726784,33.87087726 ]
+                },
+                "properties": {
+                "label":"Shops",
+                "icon":"Shops"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1728716,33.87029155 ]
+                },
+                "properties": {
+                "label":"Food",
+                "icon":"Food"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1739899,33.87057283 ]
+                },
+                "properties": {
+                "label":"Food",
+                "icon":"Food"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1714924,33.87126808 ]
+                },
+                "properties": {
+                "label":"Food",
+                "icon":"Food"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1706608,33.87097102 ]
+                },
+                "properties": {
+                "label":"Food",
+                "icon":"Food"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1723772,33.87123998 ]
+                },
+                "properties": {
+                "label":"Water",
+                "icon":"Water"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1742095,33.87043312 ]
+                },
+                "properties": {
+                "label":"Water",
+                "icon":"Water"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1739964,33.8707699 ]
+                },
+                "properties": {
+                "label":"Restroom",
+                "icon":"Restroom"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1740608,33.8701775 ]
+                },
+                "properties": {
+                "label":"Restroom",
+                "icon":"Restroom"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1744211,33.8708975 ]
+                },
+                "properties": {
+                "label":"VIP Village",
+                "icon":"VIPVillage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1736695,33.8700646 ]
+                },
+                "properties": {
+                "label":"Bar",
+                "icon":"Bar"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1730562,33.8700473 ]
+                },
+                "properties": {
+                "label":"Bar",
+                "icon":"Bar"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.172429,33.8713736 ]
+                },
+                "properties": {
+                "label":"Restroom",
+                "icon":"Restroom"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1745987,33.8752593 ]
+                },
+                "properties": {
+                "label":"Restroom",
+                "icon":"Restroom"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1747918,33.8750811 ]
+                },
+                "properties": {
+                "label":"Food",
+                "icon":"Food"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1729432,33.8716101 ]
+                },
+                "properties": {
+                "label":"Restroom",
+                "icon":"Restroom"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1708242,33.8715611 ]
+                },
+                "properties": {
+                "label":"Restroom",
+                "icon":"Restroom"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1696977,33.8703451 ]
+                },
+                "properties": {
+                "label":"Restroom",
+                "icon":"Restroom"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1698855,33.8706658 ]
+                },
+                "properties": {
+                "label":"Bar",
+                "icon":"Bar"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1714948,33.8709019 ]
+                },
+                "properties": {
+                "label":"Bar",
+                "icon":"Bar"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1730344,33.8711513 ]
+                },
+                "properties": {
+                "label":"Bar",
+                "icon":"Bar"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1762834,33.87248 ]
+                },
+                "properties": {
+                "label":"Coyote Campground",
+                "icon":"campground"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1794914,33.8735846 ]
+                },
+                "properties": {
+                "label":"Quail Campground",
+                "icon":"campground"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1734725,33.8748852 ]
+                },
+                "properties": {
+                "label":"Owl Campground",
+                "icon":"campground"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1777068,33.8766429 ]
+                },
+                "properties": {
+                "label":"Roadrunner Campground",
+                "icon":"campground"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1744237,33.8772664 ]
+                },
+                "properties": {
+                "label":"Bobcat Campground",
+                "icon":"campground"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1660221,33.8783954 ]
+                },
+                "properties": {
+                "label":"Overflow Campground",
+                "icon":"campground"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.174189,33.8753223 ]
+                },
+                "properties": {
+                "label":"General Store",
+                "icon":"GeneralStore"
+                }
+              }
+            ]
+            };
+        
+        //JSON data containting info about every musoc set with "int_start" field to filter by
+        var bands_times =
+            {
+               "type": "FeatureCollection",
+               "features": [
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"15:00",
+                "end":"16:00",
+                "int_start":15,
+                "int_end":16,
+                "band":"San Diego Freakout DJ's",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"16:00",
+                "end":"17:15",
+                "int_start":16,
+                "int_end":17,
+                "band":"KCRW DJ Jeremy Sole",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"17:15",
+                "end":"18:30",
+                "int_start":17,
+                "int_end":18,
+                "band":"Baptizm",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"18:30",
+                "end":"20:15",
+                "int_start":18,
+                "int_end":20,
+                "band":"HOTT MT - Escape to Witch Mountain - w/ The Bob Baker Marionettes",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"20:15",
+                "end":"20:50",
+                "int_start":20,
+                "int_end":20,
+                "band":"San Diego Freakout DJ's",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"20:50",
+                "end":"22:10",
+                "int_start":20,
+                "int_end":22,
+                "band":"Shannon Lay",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"22:10",
+                "end":"23:30",
+                "int_start":22,
+                "int_end":23,
+                "band":"Hooveriii",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"THU",
+                "day_num":0,
+                "start":"23:30",
+                "end":"1:00",
+                "int_start":23,
+                "int_end":1,
+                "band":"Meatbodies",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"THU",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"1:00",
+                "end":"2:00",
+                "int_start":25,
+                "int_end":26,
+                "band":"QUITAPENAS",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"9:00",
+                "end":"11:00",
+                "int_start":33,
+                "int_end":35,
+                "band":"Modular Soundbath and Yoga",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"12:30",
+                "end":"13:15",
+                "int_start":36,
+                "int_end":37,
+                "band":"Leah Senior",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"14:00",
+                "end":"15:00",
+                "int_start":38,
+                "int_end":39,
+                "band":"Chulita Vinyl Club",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"14:45",
+                "end":"15:30",
+                "int_start":38,
+                "int_end":39,
+                "band":"Al Lover",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"15:15",
+                "end":"16:10",
+                "int_start":39,
+                "int_end":40,
+                "band":"Brainstory",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"15:30",
+                "end":"16:20",
+                "int_start":39,
+                "int_end":40,
+                "band":"Molly Lewis",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"16:00",
+                "end":"16:50",
+                "int_start":40,
+                "int_end":40,
+                "band":"Small Black",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"16:10",
+                "end":"17:05",
+                "int_start":40,
+                "int_end":41,
+                "band":"Imarhan",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"16:50",
+                "end":"17:40",
+                "int_start":40,
+                "int_end":41,
+                "band":"The Space Lady",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"17:05",
+                "end":"18:05",
+                "int_start":41,
+                "int_end":42,
+                "band":"Psychedelic Porn Crumpets",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"17:20",
+                "end":"18:20",
+                "int_start":41,
+                "int_end":42,
+                "band":"L.A. Witch",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"18:05",
+                "end":"19:05",
+                "int_start":42,
+                "int_end":43,
+                "band":"Cymande",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"18:10",
+                "end":"19:00",
+                "int_start":42,
+                "int_end":43,
+                "band":"Divide & Dissolve",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"18:50",
+                "end":"19:55",
+                "int_start":42,
+                "int_end":43,
+                "band":"John Carroll Kirby",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"19:20",
+                "end":"20:05",
+                "int_start":43,
+                "int_end":44,
+                "band":"Sky Ferreira",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"19:30",
+                "end":"20:10",
+                "int_start":43,
+                "int_end":44,
+                "band":"Zo",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"20:05",
+                "end":"21:05",
+                "int_start":44,
+                "int_end":45,
+                "band":"Babe Rainbow",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"20:35",
+                "end":"21:40",
+                "int_start":44,
+                "int_end":45,
+                "band":"Cortex",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"20:40",
+                "end":"21:30",
+                "int_start":44,
+                "int_end":45,
+                "band":"Cristopher Cichocki",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"21:05",
+                "end":"22:25",
+                "int_start":45,
+                "int_end":46,
+                "band":"Chicano Batman",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"22:00",
+                "end":"23:00",
+                "int_start":46,
+                "int_end":47,
+                "band":"Charlotte Adigéry & Bolis Pupul",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"22:10",
+                "end":"23:10",
+                "int_start":46,
+                "int_end":47,
+                "band":"Duster",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"22:25",
+                "end":"23:30",
+                "int_start":46,
+                "int_end":47,
+                "band":"Men I Trust",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"23:20",
+                "end":"0:20",
+                "int_start":47,
+                "int_end":24,
+                "band":"clipping.",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"23:30",
+                "end":"1:00",
+                "int_start":47,
+                "int_end":25,
+                "band":"King Gizzard & The Lizard Wizard",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"FRI",
+                "day_num":1,
+                "start":"23:40",
+                "end":"0:40",
+                "int_start":47,
+                "int_end":24,
+                "band":"Perfume Genius",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"0:35",
+                "end":"2:00",
+                "int_start":48,
+                "int_end":50,
+                "band":"Nosaj Thing (DJ set)",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"0:40",
+                "end":"1:30",
+                "int_start":48,
+                "int_end":49,
+                "band":"Acid Dad",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"1:00",
+                "end":"2:00",
+                "int_start":49,
+                "int_end":50,
+                "band":"Mild High Club",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"1:10",
+                "end":"2:00",
+                "int_start":49,
+                "int_end":50,
+                "band":"Snapped Ankles",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"FRI",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"2:00",
+                "end":"3:00",
+                "int_start":50,
+                "int_end":51,
+                "band":"Mauskovic Dance Band",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"9:00",
+                "end":"11:00",
+                "int_start":57,
+                "int_end":59,
+                "band":"Modular Soundbath and Yoga",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"11:15",
+                "end":"12:00",
+                "int_start":59,
+                "int_end":60,
+                "band":"Randy Randall x Andrea Domanick",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"12:35",
+                "end":"13:50",
+                "int_start":60,
+                "int_end":61,
+                "band":"Psychedelics & Capitalism",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"12:45",
+                "end":"13:35",
+                "int_start":60,
+                "int_end":61,
+                "band":"The Paranoyds",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"13:00",
+                "end":"13:45",
+                "int_start":61,
+                "int_end":61,
+                "band":"Wet Satin",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"13:35",
+                "end":"14:25",
+                "int_start":61,
+                "int_end":62,
+                "band":"Sloppy Jane",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"14:15",
+                "end":"14:55",
+                "int_start":62,
+                "int_end":62,
+                "band":"Soul Glo",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"14:20",
+                "end":"15:25",
+                "int_start":62,
+                "int_end":63,
+                "band":"L'éclair",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"14:25",
+                "end":"15:15",
+                "int_start":62,
+                "int_end":63,
+                "band":"Lady Wray",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"15:15",
+                "end":"16:05",
+                "int_start":63,
+                "int_end":64,
+                "band":"Black Country, New Road",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"15:25",
+                "end":"16:20",
+                "int_start":63,
+                "int_end":64,
+                "band":"Surprise Chef",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"16:05",
+                "end":"17:00",
+                "int_start":64,
+                "int_end":65,
+                "band":"Shame",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"16:30",
+                "end":"17:45",
+                "int_start":64,
+                "int_end":65,
+                "band":"W.I.T.C.H. Secret Set!",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"16:50",
+                "end":"17:35",
+                "int_start":64,
+                "int_end":65,
+                "band":"Surfbort",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"17:00",
+                "end":"17:55",
+                "int_start":65,
+                "int_end":65,
+                "band":"Frankie and the Witch Fingers",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"17:55",
+                "end":"18:50",
+                "int_start":65,
+                "int_end":66,
+                "band":"Nilüfer Yanya",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"18:05",
+                "end":"19:05",
+                "int_start":66,
+                "int_end":67,
+                "band":"Slift",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"18:20",
+                "end":"20:05",
+                "int_start":66,
+                "int_end":68,
+                "band":"Hamilton's Pharmacopeia",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"18:50",
+                "end":"19:45",
+                "int_start":66,
+                "int_end":67,
+                "band":"Seun Kuti & Egypt 80",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"19:35",
+                "end":"20:35",
+                "int_start":67,
+                "int_end":68,
+                "band":"Mildlife",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"19:45",
+                "end":"20:45",
+                "int_start":67,
+                "int_end":68,
+                "band":"Viagra Boys",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"20:25",
+                "end":"21:30",
+                "int_start":68,
+                "int_end":69,
+                "band":"Al Lover",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"20:45",
+                "end":"21:30",
+                "int_start":68,
+                "int_end":69,
+                "band":"JJUUJJUU",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"21:15",
+                "end":"22:10",
+                "int_start":69,
+                "int_end":70,
+                "band":"Nation of Language",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"21:30",
+                "end":"22:45",
+                "int_start":69,
+                "int_end":70,
+                "band":"Kikagaku Moyo",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"22:00",
+                "end":"22:40",
+                "int_start":70,
+                "int_end":70,
+                "band":"Heads Are Heavy",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"22:40",
+                "end":"23:30",
+                "int_start":70,
+                "int_end":71,
+                "band":"The Armed",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"22:45",
+                "end":"23:45",
+                "int_start":70,
+                "int_end":71,
+                "band":"Shannon & The Clams",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"23:10",
+                "end":"0:00",
+                "int_start":71,
+                "int_end":48,
+                "band":"Cristopher Cichocki",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SAT",
+                "day_num":2,
+                "start":"23:45",
+                "end":"0:55",
+                "int_start":71,
+                "int_end":48,
+                "band":"Tame Impala",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"0:00",
+                "end":"0:45",
+                "int_start":72,
+                "int_end":72,
+                "band":"Kid 606",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"0:30",
+                "end":"1:20",
+                "int_start":72,
+                "int_end":73,
+                "band":"Show Me The Body",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"0:45",
+                "end":"2:00",
+                "int_start":72,
+                "int_end":74,
+                "band":"Telefon Tel Aviv (DJ set)",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"1:00",
+                "end":"2:00",
+                "int_start":73,
+                "int_end":74,
+                "band":"Reggie Watts",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"SAT",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"1:30",
+                "end":"2:30",
+                "int_start":73,
+                "int_end":74,
+                "band":"Vinyl Williams",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"9:00",
+                "end":"11:00",
+                "int_start":81,
+                "int_end":83,
+                "band":"Modular Soundbath and Yoga",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"11:15",
+                "end":"12:00",
+                "int_start":83,
+                "int_end":84,
+                "band":"Grave Flowers Bongo Band",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"12:30",
+                "end":"13:45",
+                "int_start":84,
+                "int_end":85,
+                "band":"KCRW DJ Travis Holcombe",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"12:45",
+                "end":"13:30",
+                "int_start":84,
+                "int_end":85,
+                "band":"Mariachi Reyna De Los Angeles",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"13:00",
+                "end":"14:00",
+                "int_start":85,
+                "int_end":86,
+                "band":"Ryu Kurosawa + Sam Gendel",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"13:30",
+                "end":"14:15",
+                "int_start":85,
+                "int_end":86,
+                "band":"DJ livn_rm_show",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"14:15",
+                "end":"15:05",
+                "int_start":86,
+                "int_end":87,
+                "band":"Inner Wave",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"14:15",
+                "end":"15:05",
+                "int_start":86,
+                "int_end":87,
+                "band":"Vanishing Twin",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"14:30",
+                "end":"15:45",
+                "int_start":86,
+                "int_end":87,
+                "band":"GUM (DJ set)",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"15:05",
+                "end":"15:55",
+                "int_start":87,
+                "int_end":87,
+                "band":"Strawberry Guy",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"15:35",
+                "end":"16:25",
+                "int_start":87,
+                "int_end":88,
+                "band":"Working Men's Club",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"15:45",
+                "end":"16:30",
+                "int_start":87,
+                "int_end":88,
+                "band":"TOMO (Kikagaku Moyo) (DJ Set)",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"15:55",
+                "end":"16:50",
+                "int_start":87,
+                "int_end":88,
+                "band":"JPEGMAFIA",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"16:50",
+                "end":"17:45",
+                "int_start":88,
+                "int_end":89,
+                "band":"Buck Meek",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"16:55",
+                "end":"17:45",
+                "int_start":88,
+                "int_end":89,
+                "band":"Automatic",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"17:00",
+                "end":"18:00",
+                "int_start":89,
+                "int_end":90,
+                "band":"Noura Mint Seymali",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"17:45",
+                "end":"18:50",
+                "int_start":89,
+                "int_end":90,
+                "band":"BADBADNOTGOOD",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"18:15",
+                "end":"19:05",
+                "int_start":90,
+                "int_end":91,
+                "band":"Sleaford Mods",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"18:25",
+                "end":"19:25",
+                "int_start":90,
+                "int_end":91,
+                "band":"Tarik Barri Workshop - Explorations in Video Sync",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"18:50",
+                "end":"19:45",
+                "int_start":90,
+                "int_end":91,
+                "band":"Levitation Room",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"19:35",
+                "end":"20:30",
+                "int_start":91,
+                "int_end":92,
+                "band":"Dakhabrakha",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"19:45",
+                "end":"20:50",
+                "int_start":91,
+                "int_end":92,
+                "band":"The Marías",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"19:45",
+                "end":"21:00",
+                "int_start":91,
+                "int_end":93,
+                "band":"Micki Pellerano + Guests",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"20:50",
+                "end":"22:00",
+                "int_start":92,
+                "int_end":94,
+                "band":"Fuzz",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"21:00",
+                "end":"22:00",
+                "int_start":93,
+                "int_end":94,
+                "band":"Aldous Harding",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"21:15",
+                "end":"22:15",
+                "int_start":93,
+                "int_end":94,
+                "band":"Silent Servant",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735142,33.86965362 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"22:00",
+                "end":"23:15",
+                "int_start":94,
+                "int_end":95,
+                "band":"Beach House",
+                "stage":"Moon Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"22:15",
+                "end":"22:55",
+                "int_start":94,
+                "int_end":94,
+                "band":"Cristopher Cichocki",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1735888,33.87118983 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"23:15",
+                "end":"0:30",
+                "int_start":95,
+                "int_end":72,
+                "band":"Pond",
+                "stage":"Block Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.17006,33.87041553 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"23:30",
+                "end":"0:20",
+                "int_start":95,
+                "int_end":72,
+                "band":"Radiojed",
+                "stage":"Beach Stage"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"23:30",
+                "end":"0:30",
+                "int_start":95,
+                "int_end":72,
+                "band":"KCRW DJ Tyler Boudreaux",
+                "stage":"Outer Space"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1700973,33.87145 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"SUN",
+                "day_num":3,
+                "start":"23:45",
+                "end":"0:45",
+                "int_start":95,
+                "int_end":72,
+                "band":"Panther Modern",
+                "stage":"The Sanctuary"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                   "type": "Point",
+                   "coordinates":  [ -117.1746258,33.874609 ]
+                },
+                "properties": {
+                "schedule_day":"SUN",
+                "actual_day":"MON",
+                "day_num":4,
+                "start":"1:00",
+                "end":"2:00",
+                "int_start":97,
+                "int_end":98,
+                "band":"closing ceremonies with JJUUJJUU & friends",
+                "stage":"Outer Space"
+                }
+              }
+            ]
+            };
+
+        // Set bounds to Moreno Beach, CA
+        var bounds = [
+                //custom
+                [-117.193528, 33.862071], // Southwest coordinates
+                [-117.160650, 33.882451]  // Northeast coordinates 
+        ];
+        
+        //json structure to define what color each point should be (places layer)
+        var colors =  {
+            "MoonStage":'#E3457F',
+            "BlockStage":'#E3457F',
+            "BeachStage":'#E3457F',
+            "SanctuaryStage":'#E3457F',
+            "OuterSpaceStage":'#E3457F',
+            "music":'#E3457F',
+            "Merch":'#DF7B3D',
+            "Marketplace":'#EB4545', 
+            "Shops":'#EB4545',
+            "Food":'#5FC7C9',
+            "Water":'#427FC2',
+            "Restroom":'#FFEFDF',
+            "VIPVillage": '#D7CB45',
+            "Bar": '#7E2B7B',
+            "CoyoteCampground": '#613D1D',
+            "QuailCampground": '#613D1D',
+            "OwlCampground": '#613D1D',
+            "RoadrunnerCampground": '#613D1D',
+            "BobcatCampground": '#613D1D',
+            "OverflowCampground": '#613D1D',
+            "campground": '#613D1D',
+            "GeneralStore": '#23B35C'
+        };
+
+        
+        //for display with slider bar, called within filterBy()
+        var time_labels = {
+            15: 'THU 03:00 PM',
+            16: 'THU 04:00 PM',
+            17: 'THU 05:00 PM',
+            18: 'THU 06:00 PM',
+            19: 'THU 07:00 PM',
+            20: 'THU 08:00 PM',
+            21: 'THU 09:00 PM',
+            22: 'THU 10:00 PM',
+            23: 'THU 11:00 PM',
+            24: 'FRI 12:00 AM',
+            25: 'FRI 01:00 AM',
+            26: 'FRI 02:00 AM',
+            27: 'FRI 03:00 AM',
+            28: 'FRI 04:00 AM',
+            29: 'FRI 05:00 AM',
+            30: 'FRI 06:00 AM',
+            31: 'FRI 07:00 AM',
+            32: 'FRI 08:00 AM',
+            33: 'FRI 09:00 AM',
+            34: 'FRI 10:00 AM',
+            35: 'FRI 11:00 AM',
+            36: 'FRI 12:00 PM',
+            37: 'FRI 01:00 PM',
+            38: 'FRI 02:00 PM',
+            39: 'FRI 03:00 PM',
+            40: 'FRI 04:00 PM',
+            41: 'FRI 05:00 PM',
+            42: 'FRI 06:00 PM',
+            43: 'FRI 07:00 PM',
+            44: 'FRI 08:00 PM',
+            45: 'FRI 09:00 PM',
+            46: 'FRI 10:00 PM',
+            47: 'FRI 11:00 PM',
+            48: 'SAT 12:00 AM',
+            49: 'SAT 01:00 AM',
+            50: 'SAT 02:00 AM',
+            51: 'SAT 03:00 AM',
+            52: 'SAT 04:00 AM',
+            53: 'SAT 05:00 AM',
+            54: 'SAT 06:00 AM',
+            55: 'SAT 07:00 AM',
+            56: 'SAT 08:00 AM',
+            57: 'SAT 09:00 AM',
+            58: 'SAT 10:00 AM',
+            59: 'SAT 11:00 AM',
+            60: 'SAT 12:00 PM',
+            61: 'SAT 01:00 PM',
+            62: 'SAT 02:00 PM',
+            63: 'SAT 03:00 PM',
+            64: 'SAT 04:00 PM',
+            65: 'SAT 05:00 PM',
+            66: 'SAT 06:00 PM',
+            67: 'SAT 07:00 PM',
+            68: 'SAT 08:00 PM',
+            69: 'SAT 09:00 PM',
+            70: 'SAT 10:00 PM',
+            71: 'SAT 11:00 PM',
+            72: 'SUN 12:00 AM',
+            73: 'SUN 01:00 AM',
+            74: 'SAT 02:00 AM',
+            75: 'SAT 03:00 AM',
+            76: 'SAT 04:00 AM',
+            77: 'SAT 05:00 AM',
+            78: 'SAT 06:00 AM',
+            79: 'SUN 07:00 AM',
+            80: 'SUN 08:00 AM',
+            81: 'SUN 09:00 AM',
+            82: 'SUN 10:00 AM',
+            83: 'SUN 11:00 AM',
+            84: 'SUN 12:00 PM',
+            85: 'SUN 01:00 PM',
+            86: 'SUN 02:00 PM',
+            87: 'MON 03:00 PM',
+            88: 'TUE 04:00 PM',
+            89: 'WED 05:00 PM',
+            90: 'THU 06:00 PM',
+            91: 'FRI 07:00 PM',
+            92: 'SAT 08:00 PM',
+            93: 'SUN 09:00 PM',
+            94: 'MON 10:00 PM',
+            95: 'TUE 11:00 PM',
+            96: 'MON 12:00 AM',
+            97: 'MON 01:00 AM',
+            98: 'MON 02:00 AM'
+        } 
+
+        
+        //INITIALIZE MAP
+        var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/cotcasek/clh9jtkbi00d701r8c3bre5em',
+                center: [-117.171773, 33.872514], //all stages in view
+                zoom: 15,  
+                minZoom: 11,  //all stages in view
+                maxBounds: bounds
+            });
+        
+        //filter by time of day
+        function filterBy(day_hour) {
+            const filters = ['==', 'int_start', day_hour];
+            map.setFilter('band_layer', filters);
+            console.log(day_hour);
+            
+            // Set the label to the day
+            document.getElementById('set_time').innerText = time_labels[day_hour];
+        };
+        
+        // Map's On 'load' function.
+        map.on('load', function () {
+            //console.log('loaded!');
+             // insert code in the function here  (II.3)
+             
+
+        //add geojson source band/schedule     
+            var band_layer = 'band_layer';
+            map.addSource('bands', {
+                 'type': 'geojson',
+                 'data': bands_times
+        
+             });
+            //add layer containing info for each band/set
+            map.addLayer({
+                 'id': band_layer,
+                 'type': 'circle',
+                 'source': 'bands',
+                 //'layout': {
+                 // These icons are a part of the Mapbox Light style.
+                 //'icon-image': symbol + '-15',
+    //             'icon-allow-overlap': true
+    //             },
+                paint: {
+                    'circle-radius': 12,
+                    'circle-color': '#F9B900',
+                    'circle-stroke-color': '#F8F900',
+                    'circle-stroke-width': 5,
+                    'circle-opacity': 0.8
+                } 
+            });
+            
+            // Add a GeoJSON source containing place coordinates and information.
+             map.addSource('places', {
+                 'type': 'geojson',
+                 'data': places
+                 //'data': 'https://cotcasek.github.io/WebMapping/DDazeInteractiveMap/ddazePlaces.json' 
+             });
+            
+            //add map layers, each feature "icon" is a different layer
+            places.features.forEach(function (feature) {
+                 var symbol = feature.properties['icon']; // get the value from the 'icon' field in the data
+                 var layerID = 'poi-' + symbol;
+                 //console.log(colors[symbol]);
+
+                 // Add a layer for this symbol type if there is not a layer with this name already.
+                 if (!map.getLayer(layerID)) {
+                     map.addLayer({
+                         'id': layerID,
+                         'type': 'circle',
+                         'source': 'places',
+                         //'layout': {
+                         // These icons are a part of the Mapbox Light style.
+                         //'icon-image': symbol + '-15',
+            //             'icon-allow-overlap': true
+            //             },
+                          paint: {
+                                'circle-radius': 8,
+                                'circle-color': colors[symbol], //can i pull from a color list that iterates with the layer #?
+                                'circle-stroke-color': 'white',
+                                'circle-stroke-width': 0,
+                                'circle-opacity': 1
+                             },
+                         // filter the dataset for all features that have the `icon` value that is the same and the current `symbol` value. 
+                         'filter': ['==', 'icon', symbol] 
+                     });
+
+
+                      // When a click event occurs on a feature in the places layer, 
+                      // open a popup at the location of the feature, with description HTML from its properties.
+                      map.on('click', layerID, function (e) {
+                             
+                          var coordinates = e.features[0].geometry.coordinates.slice();
+                          
+                          if (e.features[0].properties.icon == 'Merch') {
+                              var description = "Merch Stand.  Crazy long lines are a great place to make new friends";
+                          } else if (e.features[0].properties.icon == 'Marketplace') {
+                              var description = "This is <a href='https://desertdaze.org/market/' target='_blank'>the Marketplace</a>";
+                          } else if (e.features[0].properties.icon == 'Shops'){
+                              var description = "Shops! So many great vendors to check out.";
+                          } else if (e.features[0].properties.icon == 'Food'){
+                              var description = "Food stand, yum";
+                          } else if (e.features[0].properties.icon == 'Water'){
+                              var description = "Water station, stay hydrated!";
+                          } else if (e.features[0].properties.icon == 'Restroom'){
+                              var description = "Restrooms";
+                          } else if (e.features[0].properties.icon == 'VIPVillage'){
+                              var description = "VIP Village";
+                          } else if (e.features[0].properties.icon == 'Bar'){
+                              var description = "Bar";
+                          } else if (e.features[0].properties.icon == 'campground'){
+                              var description = e.features[0].properties.label;
+                          } else if (e.features[0].properties.icon == 'GeneralStore'){
+                              var description = "Stock up on anything you forgot at the General Store.";
+                          } else if (e.features[0].properties.icon == 'music'){
+                              var description = e.features[0].properties.label;
+                          };
+                         
+                              
+                        //don't create a popup for stages here                           
+                        //  if(!(e.features[0].properties.icon == 'music')) {   
+                                  new mapboxgl.Popup()
+                                     .setLngLat(coordinates)
+                                     .setHTML(description) // the string in the description var is added to the popup here
+                                     .addTo(map);
+                          //  };
+                      }); //end map.on(click..)
+                 
+                    //cursor affordance
+                     map.on('mouseenter', layerID, function () { 
+                        map.getCanvas().style.cursor = 'pointer';
+                        });
+                     //cursor back to grab hand when not hovering over data
+                     map.on('mouseleave', layerID, function () {
+                        map.getCanvas().style.cursor = '';
+                     });
+                 } //end if(!map.getLayer(layerID)...)
+             }); //end places.features.forEach(...)
+            
+            //set initial filter value, ensures a time shows up on the slider to start
+            filterBy(14); //return to 15 when publishing
+            document.getElementById('slider').addEventListener('input', (e) => {
+                const day_hour = parseInt(e.target.value, 10); //10 = decimal base
+                //console.log(e.features[0].properties.band); //why can't console read this?
+                 //console.log(day_hour);
+                 filterBy(day_hour);
+                
+                
+                //create popups for each set at each stage with specific descriptions
+                map.on('click', band_layer, function (e) { 
+                    var coordinates = e.features[0].geometry.coordinates.slice();
+                    
+                    if (e.features[0].properties.stage == 'The Sanctuary'){
+                        var description = e.features[0].properties.band + " is playing at " + e.features[0].properties.stage +": "+
+                        e.features[0].properties.start + "-" + e.features[0].properties.end;
+                    } else {
+                        var description = e.features[0].properties.band + " is playing at  the " + e.features[0].properties.stage +": "+
+                        e.features[0].properties.start + "-" + e.features[0].properties.end;
+                    }
+                    //console.log(e.features[0].properties.band);
+
+                    var stage_pop = new mapboxgl.Popup()
+                                     .setLngLat(coordinates)
+                                     .setHTML(description) // the string in the description var is added to the popup here
+                                     .addTo(map); 
+                    //stage_pop.open();
+                    
+                    document.getElementById('mapboxgl-popup-close-button').onClick = function(a) {stage_pop.remove()};
+                //then remove when filter changes
+
+                //popup1.openPopup();
+                });
+            });
+            
+            
+
+        }); //end map.on(load..)
+    </script>
+
+</body>
+</html>
