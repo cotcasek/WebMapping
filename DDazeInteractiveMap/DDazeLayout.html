@@ -58,6 +58,21 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
         </div>
 
         <!--  Sidebar panel  -->
+         <div class="sidebar cell medium-3 large-2 large-order-1 show-for-medium">
+            <h5><br>Information Portal:</h5>
+            <ul>
+                <li><a class="content-link-inspiration" href="#">Inspiration and References</a></li>
+                <li><a class="content-link-schedule" href="#">2022 Schedule</a></li>
+                <li><a class="content-link-pictures" href="#">Pictures</a></li>
+                <li>For more information check out <a href="https://desertdaze.org/">desertdaze.org</a>.</li>
+            </ul>
+
+            <hr />
+
+        </div>
+
+        
+<!--
         <div class="sidebar cell medium-3 large-2 large-order-1 show-for-medium">
             <h5><br>Information Portal:</h5>
             <ul>
@@ -71,12 +86,21 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
             <hr />
 
         </div>
+-->
 
         <div class="content-close-button-container">
             <a href="#" class="content-close-button">×</a>
         </div>
         
         <!--  Content panel  -->
+        
+        <div id="panel" class="content cell large-5 large-order-3">
+            <h2>This map was inspired by the work of artists!</h2>
+            <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">Check out the <a href= "https://desertdaze.org/wp-content/uploads/2022/09/DesertDaze_2022_VenueMap-5-2048x2048.jpg" target="_blank">original 2022 Desert Daze Festival Map</a> by <a href="https://www.instagram.com/mermaidhex/?hl=en" target="_blank">Mermaid Hex</a> and <a href="https://www.instagram.com/obelisk_teleporter/?hl=en" target="_blank">Obelisk Teleporter</a>, to support the best festival on the planet (created by <a href="https://www.instagram.com/jjuujjuu/?hl=en" target="_blank">Phil Pirrone</a>).</span></p>
+            <p></p>
+        </div>
+        
+        
 <!--
         <div id="inspiration" class="content cell large-5 large-order-3">
             <h2>This map was inspired by the work of artists!</h2>
@@ -87,6 +111,7 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
         </div>
 -->
         
+<!--
         <div id="schedule" class="content cell large-5 large-order-3">
             
             <h2>This map was inspired by the work of artists!</h2>
@@ -101,7 +126,8 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
             <p><img src= "img/sunday.png" alt="Sunday schedule"></p>
             <p>Credit: <a href= "https://desertdaze.org/about/">desertdaze.org/about</a></p>
         </div>
-
+-->
+        
     </div>
 
     <script>
@@ -118,7 +144,49 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
 
             });
 
-            $('.content-link').click(function() {
+            $('.content-link-schedule').click(function() {
+                document.getElementById("panel").innerHTML=`<h2>2022 Weekend Schedule</h2>
+                    <p><img src= "img/thursday.png" alt="Thursday schedule"></p>
+                    <p><img src= "img/friday.png" alt="Friday schedule"></p>
+                    <p><img src= "img/saturday.png" alt="Saturday schedule"></p>
+                    <p><img src= "img/sunday.png" alt="Sunday schedule"></p>
+                    <p>Credit: <a href= "https://desertdaze.org/about/">desertdaze.org/about</a></p>`;
+                
+                $('.content-close-button').show();
+                $('.content').show();
+                $('.site-main').addClass('has-content-open')
+                window.dispatchEvent(new Event('resize'));
+                
+                
+            });
+            
+             $('.content-link-inspiration').click(function() {
+                 document.getElementById("panel").innerHTML=`
+                    <h2>This map was inspired by the work of artists!</h2>
+            <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">Check out the <a href= "https://desertdaze.org/wp-content/uploads/2022/09/DesertDaze_2022_VenueMap-5-2048x2048.jpg" target="_blank">original 2022 Desert Daze Festival Map</a> created by <a href="https://www.instagram.com/mermaidhex/?hl=en" target="_blank">Mermaid Hex</a> and <a href="https://www.instagram.com/obelisk_teleporter/?hl=en" target="_blank">Obelisk Teleporter.</a></span></p>
+            <p></p>`;
+                 
+                $('.content-close-button').show();
+                $('.content').show();
+                $('.site-main').addClass('has-content-open')
+                window.dispatchEvent(new Event('resize'));
+            });
+            
+                $('.content-link-pictures').click(function() {
+                 document.getElementById("panel").innerHTML=`
+                    <h2>Desert Daze over the years...</h2>
+                    <h5>2022</h5>
+                    <p><img src= "img/2022daycrowd.png" alt="Thursday schedule"></p>
+                    <p><img src= "img/2022beachstage.png" alt="Thursday schedule"></p>
+                    <h5>2021</h5>
+                    <p><img src= "img/2021nightset.png" alt="Thursday schedule"></p>
+                    <p><img src= "img/2021horizon.png" alt="Thursday schedule"></p>
+                    <p><img src= "img/2021heartheads.png" alt="Thursday schedule"></p>
+                    <h5>2019</h5>
+                    <p><img src= "img/2019swing.png" alt="Thursday schedule"></p>
+                    <p><img src= "img/2019nighttrees.png" alt="Thursday schedule"></p>
+                    `;
+                 
                 $('.content-close-button').show();
                 $('.content').show();
                 $('.site-main').addClass('has-content-open')
