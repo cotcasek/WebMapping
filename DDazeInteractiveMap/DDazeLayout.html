@@ -66,9 +66,12 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
                 <li><a class="content-link-pictures" href="#">Pictures</a></li>
                 <li>For more information check out <a href="https://desertdaze.org/">desertdaze.org</a>.</li>
             </ul>
-             <p style="font-size: 15px">This layout of this site is based on style code provided by <a href="https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-maps-229cec508b22" target="_blank">Andy Cochran</a>, and modifed by the site creator. </p>
+            <p style="font-size: 15px">This layout of this site is based on style code provided by <a href="https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-maps-229cec508b22" target="_blank">Andy Cochran</a>, and modifed by the site creator. </p>
             <hr />
+
         </div>
+
+        
 
         <div class="content-close-button-container">
             <a href="#" class="content-close-button">×</a>
@@ -77,6 +80,7 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
         <!--  Content panel  -->
         
         <div id="panel" class="content cell large-5 large-order-3">
+            <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">This is an interactive of the Desert Daze festival grounds at Moreno Beach.  Explore the map by moving the time slider and clicking the different points to see what's going on at those locations.  Have fun and see you at the beach!<br></span></p>
             <h2>This map was inspired by the work of artists!</h2>
             <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">Check out the <a href= "https://desertdaze.org/wp-content/uploads/2022/09/DesertDaze_2022_VenueMap-5-2048x2048.jpg" target="_blank">original 2022 Desert Daze Festival Map</a> by <a href="https://www.instagram.com/mermaidhex/?hl=en" target="_blank">Mermaid Hex</a> and <a href="https://www.instagram.com/obelisk_teleporter/?hl=en" target="_blank">Obelisk Teleporter</a>, to support the best festival on the planet (created by <a href="https://www.instagram.com/jjuujjuu/?hl=en" target="_blank">Phil Pirrone</a>).</span></p>
             <p></p>
@@ -116,9 +120,10 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
             
              $('.content-link-inspiration').click(function() {
                  document.getElementById("panel").innerHTML=`
+                    <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">This is an interactive of the Desert Daze festival grounds at Moreno Beach.  Explore the map by moving the time slider and clicking the different points to see what's going on at those locations.  Have fun and see you at the beach!<br></span></p>
                     <h2>This map was inspired by the work of artists!</h2>
-            <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">Check out the <a href= "https://desertdaze.org/wp-content/uploads/2022/09/DesertDaze_2022_VenueMap-5-2048x2048.jpg" target="_blank">original 2022 Desert Daze Festival Map</a> created by <a href="https://www.instagram.com/mermaidhex/?hl=en" target="_blank">Mermaid Hex</a> and <a href="https://www.instagram.com/obelisk_teleporter/?hl=en" target="_blank">Obelisk Teleporter</a>, to support the best festival on the planet (created by <a href="https://www.instagram.com/jjuujjuu/?hl=en" target="_blank">Phil Pirrone</a>).</span></a></span></p>
-            <p></p>`;
+                    <p><span style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: 25px">Check out the <a href= "https://desertdaze.org/wp-content/uploads/2022/09/DesertDaze_2022_VenueMap-5-2048x2048.jpg" target="_blank">original 2022 Desert Daze Festival Map</a> by <a href="https://www.instagram.com/mermaidhex/?hl=en" target="_blank">Mermaid Hex</a> and <a href="https://www.instagram.com/obelisk_teleporter/?hl=en" target="_blank">Obelisk Teleporter</a>, to support the best festival on the planet (created by <a href="https://www.instagram.com/jjuujjuu/?hl=en" target="_blank">Phil Pirrone</a>).</span></p>
+                    <p></p>`;
                  
                 $('.content-close-button').show();
                 $('.content').show();
