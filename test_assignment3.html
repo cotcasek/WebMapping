@@ -1,0 +1,29 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+     <meta charset='utf-8' />
+     <title>Owners vs Renters Map</title>
+     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+     <script src="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.js"></script>
+     <link href="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.css" rel="stylesheet">
+     <style>
+         body { margin:0; padding:0; }
+         #map { position:absolute; top:0; bottom:0; width:100%; }
+     </style>
+ </head>
+ <body>
+
+   <div id='map'></div>
+   <script>
+     mapboxgl.accessToken = 'pk.eyJ1IjoiY290Y2FzZWsiLCJhIjoiY204aGc4bTI5MDFtazJzcTAxZmp4em5nNCJ9.b7JU5FUF9tkZ8dar7jQU0w'; 
+     var map = new mapboxgl.Map({
+         container: 'map', // container id
+         style: 'mapbox://styles/cotcasek/cmo7jq8v4003c01rc9dmxgozl', // stylesheet location
+         center: ['-122.6788', '45.5212'],
+         zoom: 11
+     });
+   </script>
+
+ </body>
+ </html>
