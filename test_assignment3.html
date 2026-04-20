@@ -16,7 +16,8 @@
 
    <div id='map'></div>
    <script>
-     mapboxgl.accessToken = 'pk.eyJ1IjoiY290Y2FzZWsiLCJhIjoiY204aGc4bTI5MDFtazJzcTAxZmp4em5nNCJ9.b7JU5FUF9tkZ8dar7jQU0w'; 
+     const TOKEN = 'pk.eyJ1IjoiY290Y2FzZWsiLCJhIjoiY204aGc4bTI5MDFtazJzcTAxZmp4em5nNCJ9.b7JU5FUF9tkZ8dar7jQU0w';
+     mapboxgl.accessToken = TOKEN; 
      var map = new mapboxgl.Map({
          container: 'map', // container id
          style: 'mapbox://styles/cotcasek/cmo7jq8v4003c01rc9dmxgozl', // stylesheet location
